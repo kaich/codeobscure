@@ -25,7 +25,7 @@ module FuncList
       content = File.read full_file_path
       captures = capture content 
       capture_methods = capture_methods + captures
-      if capture_methods.length % (1024 * 1024) = 0 
+      if capture_methods.length % (1024 * 1024) == 0 
         file.write(captures.join "\n") 
         capture_methods = []
       end

@@ -1,3 +1,3 @@
 require 'codeobscure'
 
-Codeobscure.obscure ARGV
+Codeobscure.obscure

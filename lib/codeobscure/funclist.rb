@@ -27,12 +27,10 @@ module FuncList
       captures = capture content 
       captures.each do |capture_method| 
         if !capture_method.start_with? "init" 
-          capture_methods << capture_method 
+          if !capture_methods.include? capture_method 
+            capture_methods << capture_method 
+          end
         end
-      end
-      if capture_methods.length % (1024 * 1024) == 0 
-        file.write(capture_methods.join "\n") 
-        capture_methods = []
       end
     end
     if capture_methods.length > 0 

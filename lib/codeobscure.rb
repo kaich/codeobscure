@@ -1,5 +1,6 @@
 require "codeobscure/version"
 require "codeobscure/funclist"
+require "codeobscure/obscure"
 require "colorize"
 require 'xcodeproj'
 require 'fileutils'

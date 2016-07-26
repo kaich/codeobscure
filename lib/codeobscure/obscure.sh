@@ -3,7 +3,7 @@
 TABLENAME=symbols  
 SYMBOL_DB_FILE="symbols"  
 STRING_SYMBOL_FILE="func.list"  
-HEAD_FILE="$PROJECT_DIR/$PROJECT_NAME/codeObfuscation.h"  
+HEAD_FILE="$PROJECT_DIR/codeObfuscation.h"  
 export LC_CTYPE=C  
   
 #维护数据库方便日后作排重  

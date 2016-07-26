@@ -19,7 +19,7 @@ module Codeobscure
       project = Xcodeproj::Project.open xpj_path
       first_target = project.targets.first
       is_shell_phase_exist = false
-      shell_script = "$PROJECT_DIR/obscure.sh"
+      shell_script = "/bin/sh $PROJECT_DIR/obscure.sh"
       first_target.shell_script_build_phases.each do |shell_phase|
         if shell_phase.shell_script ==  shell_script
           is_shell_phase_exist = true

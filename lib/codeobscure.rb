@@ -18,8 +18,8 @@ module Codeobscure
     if File.exist? xpj_path
       root_dir = xpj_path.split("/")[0...-1].join "/"
       shell_path = "#{root}/lib/codeobscure/obscure.sh" 
-      FuncList.genFuncList root_dir
-      header_file = Obscure.run root_dir
+      funclist_path = FuncList.genFuncList root_dir
+      header_file = Obscure.run root_dir 
       project = Xcodeproj::Project.open xpj_path
       project_name = project.name
       main_group = project.main_group

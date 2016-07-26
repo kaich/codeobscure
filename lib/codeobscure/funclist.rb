@@ -37,6 +37,7 @@ module FuncList
       file.write(capture_methods.join "\n") 
     end
     file.close
+    funclist_path
   end
   
 end

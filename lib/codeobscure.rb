@@ -18,8 +18,17 @@ module Codeobscure
       FuncList.genFuncList root_dir
       project = Xcodeproj::Project.open xpj_path
       first_target = project.targets.first
-      shell_phase = first_target.new_shell_script_build_phase 
-      shell_phase.shell_script = "$PROJECT_DIR/obscure.sh"
+      is_shell_phase_exist = false
+      shell_script = "$PROJECT_DIR/obscure.sh"
+      first_target.shell_script_build_phases.each do |shell_phase|
+        if shell_phase.shell_script ==  shell_script
+          is_shell_phase_exist = true
+        end
+      end
+      if !is_shell_phase_exist 
+        shell_phase = first_target.new_shell_script_build_phase 
+        shell_phase.shell_script = shell_script
+      end
       FileUtils.cp shell_path , "#{root_dir}/obscure.sh"
       project.save
     else 

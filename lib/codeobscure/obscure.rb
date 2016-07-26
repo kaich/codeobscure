@@ -21,13 +21,15 @@ module Obscure
   end
 
   def self.run(root_dir)
+
     @@HEAD_FILE="#{root_dir}/codeObfuscation.h"  
+    db_path = "#{root_dir}/#{@@SYMBOL_DB_FILE}" 
     
-    `rm -f #{@@SYMBOL_DB_FILE}` 
+    `rm -f #{db_path}` 
     `rm -f #{@@HEAD_FILE}` 
     createTable  
       
-    date = Date.new
+    date = `date`
     file = File.new @@HEAD_FILE , 'w'
     file.puts "#ifndef co_codeObfuscation_h" 
     file.puts "#define co_codeObfuscation_h" 
@@ -40,12 +42,13 @@ module Obscure
       insertValue line  , ramdom  
       file.puts "#define #{line} #{ramdom}"
     end
-    symbol_file.close
 
     file.puts "#endif" 
     file.close
 
-    `sqlite3 #{@@SYMBOL_DB_FILE} .dump`  
+    `sqlite3 #{db_path} .dump`  
+    `rm #{db_path}`
+    `rm #{funclist_path}`
     @@HEAD_FILE
   end
 end 

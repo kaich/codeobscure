@@ -11,7 +11,7 @@ module FuncList
 
       captures.each do |capture|
         results << capture
-        p [whole_match, capture, whole_match.index(capture)]
+        p [whole_match, capture]
       end
     end
     results

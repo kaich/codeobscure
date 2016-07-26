@@ -25,5 +25,16 @@ class CodeobscureTest < Minitest::Test
     assert_equal expect_result , content 
   end
 
+  def test_it_obscure_run 
+    test_dir = "#{File.dirname(__FILE__)}/objcTemple"
+    FuncList.genFuncList(test_dir)
+    path = "#{test_dir}/codeObfuscation.h"
+    if File.exist? path
+      File.delete path
+    end
+    Obscure.run test_dir
+    is_exist = File.exist? path
+    assert is_exist , "generate codeObfuscation.h failed" 
+  end
 
 end

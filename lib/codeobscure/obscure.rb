@@ -47,9 +47,7 @@ module Obscure
     symbol_file.each_line do |line|
       line_content = line.rstrip
       result = FiltSymbols.query(line_content) 
-      puts  "----------#{result}"
       if result.nil? || result.empty? 
-        puts "+++++++++++++"
         ramdom = ramdomString
         insertValue line_content  , ramdom  
         file.puts "#define #{line_content} #{ramdom}"

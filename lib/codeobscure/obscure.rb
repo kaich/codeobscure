@@ -1,3 +1,4 @@
+require_relative 'filtsymbols.rb'
 module Obscure  
   @@TABLENAME="symbols"  
   @@SYMBOL_DB_FILE="symbols"  
@@ -5,11 +6,13 @@ module Obscure
   
   #维护数据库方便日后作排重  
   def self.createTable  
-    `echo "create table #{@@TABLENAME}(src text, des text);" | sqlite3 #{@@SYMBOL_DB_FILE}` 
+    if !File.exist? @@SYMBOL_DB_FILE
+      `echo "create table #{@@TABLENAME}(src text, des text,PRIMARY KEY (src));" | sqlite3 #{@@SYMBOL_DB_FILE}` 
+    end 
   end
     
   def self.insertValue(line,ramdom)  
-    `echo "insert into #{@@TABLENAME} values('#{line}' ,'#{ramdom}');" | sqlite3 #{@@SYMBOL_DB_FILE}`
+    `echo "insert or ignore into #{@@TABLENAME} values('#{line}' ,'#{ramdom}');" | sqlite3 #{@@SYMBOL_DB_FILE}`
   end
     
   def self.query(line) 
@@ -42,19 +45,25 @@ module Obscure
 
     symbol_file = File.open(@@STRING_SYMBOL_FILE).read
     symbol_file.each_line do |line|
-      ramdom = ramdomString
-      insertValue line  , ramdom  
-      file.puts "#define #{line} #{ramdom}"
+      line_content = line.rstrip
+      result = FiltSymbols.query(line_content) 
+      puts  "----------#{result}"
+      if result.nil? || result.empty? 
+        puts "+++++++++++++"
+        ramdom = ramdomString
+        insertValue line_content  , ramdom  
+        file.puts "#define #{line_content} #{ramdom}"
+      end 
     end
 
     file.puts "#endif" 
     file.close
 
     `sqlite3 #{@@SYMBOL_DB_FILE} .dump`  
-    if File.exists? @@SYMBOL_DB_FILE
+    if File.exist? @@SYMBOL_DB_FILE
       `rm -f #{@@SYMBOL_DB_FILE}`
     end
-    if File.exists? @@STRING_SYMBOL_FILE
+    if File.exist? @@STRING_SYMBOL_FILE
       `rm -f #{@@STRING_SYMBOL_FILE}`
     end
     @@HEAD_FILE

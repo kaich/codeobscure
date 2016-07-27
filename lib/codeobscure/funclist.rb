@@ -11,7 +11,8 @@ module FuncList
 
       captures.each do |capture|
         results << capture
-        p [whole_match, capture]
+        #p [whole_match, capture]
+        p [capture]
       end
     end
     results
@@ -21,7 +22,7 @@ module FuncList
     capture_methods = []
     funclist_path = "#{path}/func.list"  
     file = File.open(funclist_path, "w")
-    file_pathes = `find #{path} -name "*.m" -d`.split "\n"
+    file_pathes = `find #{path} -name "*.h" -d`.split "\n"
     file_pathes.each do |file_path|
       content = File.read file_path
       captures = capture content 

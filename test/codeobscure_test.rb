@@ -21,7 +21,7 @@ class CodeobscureTest < Minitest::Test
     assert is_exist , "generate func.list file failed"
     
     content = File.read funclist_path
-    expect_result = "addItem\ngetClusters\ngetRectWithPt\nSpan\ngetDistanceSquared\npoint"
+    expect_result = "addItem\ngetClusters"
     assert_equal expect_result , content 
   end
 
@@ -35,6 +35,14 @@ class CodeobscureTest < Minitest::Test
     Obscure.run test_dir
     is_exist = File.exist? path
     assert is_exist , "generate codeObfuscation.h failed" 
+  end
+
+  def test_it_filtsymbols_load
+    test_dir = "#{File.dirname(__FILE__)}/objcTemple"
+    FiltSymbols.loadFiltSymbols test_dir 
+    path = "#{File.expand_path '../..', __FILE__}/filtSymbols"
+    is_exist = File.exist? path
+    assert is_exist , "generate filtSymbols failed"
   end
 
 end

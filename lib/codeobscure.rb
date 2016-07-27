@@ -21,9 +21,11 @@ module Codeobscure
       funclist_path = FuncList.genFuncList root_dir
       header_file = Obscure.run root_dir 
       project = Xcodeproj::Project.open xpj_path
-      project_name = project.name
+      project_name = xpj_path.split("/").last
       main_group = project.main_group
-      main_group.new_reference header_file 
+      if !main_group.find_file_by_path("codeObfuscation.h")
+        main_group.new_reference header_file 
+      end
       project.targets.each do |target|
         if target.name = project_name  
           build_configs = target.build_configurations
@@ -31,14 +33,13 @@ module Codeobscure
             build_settings = build_config.build_settings
             prefix_key = "GCC_PREFIX_HEADER"
             prefix_header = build_settings[prefix_key]
-            if prefix_header.include? "codeObfuscation.h"
-              break  
-            elsif prefix_header.nil? 
-              build_config.build_settings[prefix_key] = "#{main_group.name}/codeObfuscation.h"
+            if prefix_header.nil? || prefix_header.empty? 
+              build_config.build_settings[prefix_key] = "./codeObfuscation.h"
+            elsif prefix_header.include? "codeObfuscation.h"
+              puts "#{target.name}:#{build_config}配置文件已配置完成".colorize(:green)
             else 
-              puts "请在#{prefix_header}中#import \"codeObfuscation.h\""  
+              puts "请在#{prefix_header.class.name}中#import \"codeObfuscation.h\"".colorize(:green)
             end
-            break
           end
         end
       end

@@ -23,10 +23,15 @@ module Obscure
   def self.run(root_dir)
 
     @@HEAD_FILE="#{root_dir}/codeObfuscation.h"  
-    db_path = "#{root_dir}/#{@@SYMBOL_DB_FILE}" 
+    @@SYMBOL_DB_FILE = "#{root_dir}/#{@@SYMBOL_DB_FILE}" 
+    @@STRING_SYMBOL_FILE = "#{root_dir}/#{@@STRING_SYMBOL_FILE}"
     
-    `rm -f #{db_path}` 
-    `rm -f #{@@HEAD_FILE}` 
+    if File.exist? @@SYMBOL_DB_FILE
+      `rm -f #{@@SYMBOL_DB_FILE}`
+    end 
+    if File.exists? @@HEAD_FILE 
+      `rm -f #{@@HEAD_FILE}` 
+    end 
     createTable  
       
     date = `date`
@@ -35,8 +40,7 @@ module Obscure
     file.puts "#define co_codeObfuscation_h" 
     file.puts "//confuse string at #{date.to_s}"
 
-    funclist_path = "#{root_dir}/#{@@STRING_SYMBOL_FILE}"
-    symbol_file = File.open(funclist_path).read
+    symbol_file = File.open(@@STRING_SYMBOL_FILE).read
     symbol_file.each_line do |line|
       ramdom = ramdomString
       insertValue line  , ramdom  
@@ -46,9 +50,13 @@ module Obscure
     file.puts "#endif" 
     file.close
 
-    `sqlite3 #{db_path} .dump`  
-    `rm #{db_path}`
-    `rm #{funclist_path}`
+    `sqlite3 #{@@SYMBOL_DB_FILE} .dump`  
+    if File.exists? @@SYMBOL_DB_FILE
+      `rm -f #{@@SYMBOL_DB_FILE}`
+    end
+    if File.exists? @@STRING_SYMBOL_FILE
+      `rm -f #{@@STRING_SYMBOL_FILE}`
+    end
     @@HEAD_FILE
   end
 end 

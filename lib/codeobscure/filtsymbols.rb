@@ -27,7 +27,7 @@ module FiltSymbols
     puts "处理中,可能需要一段时间，耐心等候...".colorize(:yellow)
     symbol_file = File.open(funclist_path).read
     symbol_file.each_line do |line|
-      line_content = line.rstrip
+      line_content = line.rstrip.split(":").last
       insertValue line_content  
     end
 

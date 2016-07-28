@@ -28,8 +28,17 @@ module Codeobscure
         options[:load] = v 
       end
 
+      
+      opts.on("-r", "--reset", "reset loaded symbols") do |v|
+        options[:reset] = true
+      end
+
     end.parse!
 
+    if options[:reset] 
+      `rm -f #{root_dir}/filtSymbols`
+      `cp #{root_dir}/filtSymbols_standard #{root_dir}/filtSymbols`
+    end
 
     #only load, execute load only
     #only obscure, execute obscure only
@@ -52,7 +61,7 @@ module Codeobscure
       xpj_path = options[:obscure]
       if File.exist? xpj_path
         root_dir = xpj_path.split("/")[0...-1].join "/"
-        FuncList.genFuncList root_dir
+        FuncList.genFuncList root_dir , "all"
         header_file = Obscure.run root_dir 
         project = Xcodeproj::Project.open xpj_path
         project_name = xpj_path.split("/").last

@@ -23,6 +23,7 @@ module Obscure
     `openssl rand -base64 64 | tr -cd 'a-zA-Z' |head -c 16`
   end
 
+  #有define重复的问题等待解决
   def self.run(root_dir)
 
     @@HEAD_FILE="#{root_dir}/codeObfuscation.h"  
@@ -45,12 +46,17 @@ module Obscure
 
     symbol_file = File.open(@@STRING_SYMBOL_FILE).read
     symbol_file.each_line do |line|
-      line_content = line.rstrip
+      line_type = line.rstrip.split(":").first
+      line_content = line.rstrip.split(":").last
       result = FiltSymbols.query(line_content) 
       if result.nil? || result.empty? 
         ramdom = ramdomString
         insertValue line_content  , ramdom  
         file.puts "#define #{line_content} #{ramdom}"
+        puts "+++++++++++++++ :#{line_type}"
+        if line_type == "p"
+          file.puts "#define _#{line_content} _#{ramdom}"
+        end
       end 
     end
 

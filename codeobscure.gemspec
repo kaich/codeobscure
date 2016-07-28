@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
     raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
   end
 
-  spec.files         = Dir["lib/**/*"] + %w{ bin/codeobscure} + %w{ filtSymbols}
+  spec.files         = Dir["lib/**/*"] + %w{ bin/codeobscure} + %w{ filtSymbols} + %w{ filtSymbols_standard}
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
   spec.test_files    = Dir["test/**/*.rb"]
   spec.require_paths = ["lib","bin"]

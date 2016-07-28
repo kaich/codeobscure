@@ -1,0 +1,8 @@
+addItem
+getClusters
+getRectWithPt
+Span
+getDistanceSquared
+point
+clearItems
+BMKClusterAlgorithm

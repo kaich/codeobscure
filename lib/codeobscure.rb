@@ -24,11 +24,27 @@ module Codeobscure
         options[:obscure] = v
       end
 
-      opts.on("-l", "--load path", "load filt symbols from path") do |v|
+      opts.on("-l", "--load path1,path2,path3",Array,"load filt symbols from path") do |v|
         options[:load] = v 
       end
 
     end.parse!
+
+
+    #only load, execute load only
+    #only obscure, execute obscure only
+    #load and obscure at same time,load firt,then obscure.That's mean you can get rid of some directoies.
+    load_pathes = options[:load]
+    if load_pathes 
+      load_pathes.each do |load_path|
+        if File.exist? load_path 
+          FiltSymbols.loadFiltSymbols load_path 
+          puts "加载完毕!".colorize(:green)
+        else 
+          puts "指定的目录不存在:#{path}".colorize(:red)
+        end
+      end
+    end
 
 
     if options[:obscure]  
@@ -68,15 +84,8 @@ module Codeobscure
         puts "指定的目录不存在:#{path}".colorize(:red)
       end 
 
-    elsif options[:load]
-      load_path = options[:load]
-      if File.exist? load_path 
-        FiltSymbols.loadFiltSymbols load_path 
-        puts "加载完毕!".colorize(:green)
-      else 
-        puts "指定的目录不存在:#{path}".colorize(:red)
-      end
     end
+
   end
 
 end

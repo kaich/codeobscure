@@ -1,10 +1,11 @@
 module FuncList
 
-  @@regex = /\s*(\w+)\s*:\s*\(\s*\w+\s*\*?\s*\)\s*\w+\s*/
+  @@func_regex = /\s*(\w+)\s*:\s*\(\s*\w+\s*\*?\s*\)\s*\w+\s*/
+  @@cls_regex = /@interface\s+(\w+)\s*:\s*\w+/
 
   def self.capture(str) 
     results = []
-    str.scan @@regex do |curr_match|
+    str.scan @@func_regex do |curr_match|
       md = Regexp.last_match
       whole_match = md[0]
       captures = md.captures
@@ -15,14 +16,26 @@ module FuncList
         p [capture]
       end
     end
+    str.scan @@cls_regex do |curr_match|
+      md = Regexp.last_match
+      whole_match = md[0]
+      captures = md.captures
+
+      captures.each do |capture|
+        results << capture
+        #p [whole_match, capture]
+        p [capture]
+      end
+    end
+   
     results
   end
 
-  def self.genFuncList(path)
+  def self.genFuncList(path,type = "m")
     capture_methods = []
     funclist_path = "#{path}/func.list"  
     file = File.open(funclist_path, "w")
-    file_pathes = `find #{path} -name "*.h" -d`.split "\n"
+    file_pathes = `find #{path} -name "*.#{type}" -d`.split "\n"
     file_pathes.each do |file_path|
       content = File.read file_path
       captures = capture content 

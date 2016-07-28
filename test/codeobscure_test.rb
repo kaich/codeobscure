@@ -21,7 +21,7 @@ class CodeobscureTest < Minitest::Test
     assert is_exist , "generate func.list file failed"
     
     content = File.read funclist_path
-    expect_result = "addItem\ngetClusters"
+    expect_result = "addItem\ngetClusters\ngetRectWithPt\nSpan\ngetDistanceSquared\npoint"
     assert_equal expect_result , content 
   end
 

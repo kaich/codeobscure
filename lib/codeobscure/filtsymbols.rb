@@ -22,7 +22,7 @@ module FiltSymbols
 
     createTable
     
-    funclist_path = FuncList.genFuncList path
+    funclist_path = FuncList.genFuncList path , "h"
 
     puts "处理中,可能需要一段时间，耐心等候...".colorize(:yellow)
     symbol_file = File.open(funclist_path).read

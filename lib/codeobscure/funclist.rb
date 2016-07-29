@@ -72,12 +72,13 @@ module FuncList
 
   def self.genFuncList(path,type = "m")
     capture_methods = []
+    p_methods = []
     funclist_path = "#{path}/func.list"  
     file = File.open(funclist_path, "w")
     file_pathes = []
     if type == "h" || type == "m"
       file_pathes = `find #{path} -name "*.#{type}" -d`.split "\n"
-    else if type == "all"
+    elsif type == "all"
       file_pathes += `find #{path} -name "*.h" -d`.split "\n"
       file_pathes += `find #{path} -name "*.m" -d`.split "\n"
     end
@@ -85,13 +86,37 @@ module FuncList
       content = File.read file_path
       captures = capture content , type 
       captures.each do |capture_method| 
-        if !capture_method.start_with? "init" 
-          if !capture_methods.include? capture_method 
-            capture_methods << capture_method 
+        method_type = capture_method.split(":").first
+        method_content = capture_method.split(":").last
+        if !method_content.start_with? "init" 
+          if method_type == "c" || method_type == "f"
+            if !capture_methods.include? capture_method 
+              capture_methods << capture_method 
+            end
+          elsif method_type == "p"
+            if !p_methods.include? capture_method 
+              p_methods << capture_method 
+            end
           end
         end
       end
     end
+    
+    p_methods.each do |capture_method|
+      method_type = capture_method.split(":").first
+      method_content = capture_method.split(":").last
+      c_method = "c:#{method_content}"
+      f_method = "f:#{method_content}"
+      if capture_methods.include? c_method
+        capture_methods.delete c_method
+      end
+      if capture_methods.include? f_method
+        capture_methods.delete f_method
+      end
+    end
+
+    capture_methods += p_methods
+
     if capture_methods.length > 0 
       file.write(capture_methods.join "\n") 
     end

@@ -7,7 +7,8 @@ class CodeobscureTest < Minitest::Test
 
   def test_it_funclist_capture
     result = FuncList.capture '+ (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view' 
-    assert_equal result , ['pickerView','viewForRow','forComponent','reusingView']
+    #因为没有去重
+    assert_equal result , ['f:pickerView','f:viewForRow','f:forComponent','f:reusingView','f:pickerView']
   end
 
   def test_it_funclist_genFuncList
@@ -22,7 +23,7 @@ class CodeobscureTest < Minitest::Test
     
     content = File.read funclist_path
     puts "=========#{content.split "\n"}"
-    expect_result = "addItem\ngetClusters\ngetRectWithPt\nSpan\ngetDistanceSquared\npoint\nclearItems\nBMKClusterAlgorithm"
+    expect_result = "f:addItem\nf:getClusters\nf:getRectWithPt\nf:Span\nf:getDistanceSquared\nf:point\nf:clearItems\nc:BMKClusterAlgorithm"
     assert_equal expect_result , content 
   end
 

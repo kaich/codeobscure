@@ -53,7 +53,6 @@ module Obscure
         ramdom = ramdomString
         insertValue line_content  , ramdom  
         file.puts "#define #{line_content} #{ramdom}"
-        puts "+++++++++++++++ :#{line_type}"
         if line_type == "p"
           file.puts "#define _#{line_content} _#{ramdom}"
         end

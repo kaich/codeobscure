@@ -8,27 +8,30 @@ TODO: Delete this and the text above, and describe your gem
 
 Add this line to your application's Gemfile:
 
-```ruby
-gem 'codeobscure'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+install it yourself as:
 
     $ gem install codeobscure
 
 ## Usage
 
-TODO: Write usage instructions here
+`codeobscure -h` for command help. 
 
-## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+	Usage: obscure code for object-c project
+	    -o, --obscure XcodeprojPath      obscure code
+	    -l, --load path1,path2,path3     load filt symbols from path
+	    -r, --reset                      reset loaded symbols
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+
+-o [project file path], obscure for the project.    
+-l [path],load filt symbol path. if you don't want obscure code for some direcotry. you can use this option.    
+-r reset loaded filt symbols.
+
+Example :
+
+	codeobscure -o /Users/mac/Downloads/Examples/Messenger.xcodeproj  -l /Users/mac/Downloads/Examples/Pods >> /Users/mac/Desktop/9.3/1.txt
+
+
 
 ## Contributing
 

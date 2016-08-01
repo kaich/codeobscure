@@ -4,7 +4,9 @@ module FuncList
   @@func_simple_regex = /\s*[-\+]\s*\(\s*\w+\s*\*?\)\s*(\w+)\s*;*/
   @@hcls_regex = /@interface\s+(\w+)\s*/
   @@mcls_regex = /@implementation\s+(\w+)\s*/
-  @@property_regex = /\s*@property\s*\(.*?\)\s*\w+\s*\*?\s*(\w+)\s*;/
+  @@property_regex = /\s*@property\s*\(.*?getter=(\w+).*?\)\s*\w+\s*\*?\s*\w+\s*.*;/
+  @@property_regex2 = /\s*@property\s*\(.*?\)\s*\w+\s*\*?\s*(\w+)\s*.*;/
+  @@property_regex3 = /\s*@property\s*\(.*?\)\s*\w+\s*<.*>\s*\*?\s*(\w+)\s*.*;/
 
   def self.to_utf8(str)
     str = str.force_encoding('UTF-8')
@@ -12,30 +14,32 @@ module FuncList
     str.encode("UTF-8", 'binary', invalid: :replace, undef: :replace, replace: '')
   end
 
-  def self.capture(content_str,type = "m") 
+  def self.capture(content_str,type = "m",fetch_types=["p","f","c"]) 
     results = []
     str = to_utf8 content_str
-    str.scan @@func_regex do |curr_match|
-      md = Regexp.last_match
-      whole_match = md[0]
-      captures = md.captures
+    if fetch_types.include? "f"
+      str.scan @@func_regex do |curr_match|
+        md = Regexp.last_match
+        whole_match = md[0]
+        captures = md.captures
 
-      captures.each do |capture|
-        results << "f:#{capture}"
-        #p [whole_match, capture]
-        p "f:[#{capture}]"
+        captures.each do |capture|
+          results << "f:#{capture}"
+          #p [whole_match, capture]
+          p "f:[#{capture}]"
+        end
       end
-    end
-    #no arguments function
-    str.scan @@func_simple_regex do |curr_match|
-      md = Regexp.last_match
-      whole_match = md[0]
-      captures = md.captures
+      #no arguments function
+      str.scan @@func_simple_regex do |curr_match|
+        md = Regexp.last_match
+        whole_match = md[0]
+        captures = md.captures
 
-      captures.each do |capture|
-        results << "f:#{capture}"
-        #p [whole_match, capture]
-        p "f:[#{capture}]"
+        captures.each do |capture|
+          results << "f:#{capture}"
+          #p [whole_match, capture]
+          p "f:[#{capture}]"
+        end
       end
     end
     cls_regex = ""
@@ -44,33 +48,59 @@ module FuncList
     else
       cls_regex = @@mcls_regex
     end
-    str.scan cls_regex do |curr_match|
-      md = Regexp.last_match
-      whole_match = md[0]
-      captures = md.captures
+    if fetch_types.include? "c"
+      str.scan cls_regex do |curr_match|
+        md = Regexp.last_match
+        whole_match = md[0]
+        captures = md.captures
 
-      captures.each do |capture|
-        results << "c:#{capture}"
-        #p [whole_match, capture]
-        p "c:[#{capture}]"
+        captures.each do |capture|
+          results << "c:#{capture}"
+          #p [whole_match, capture]
+          p "c:[#{capture}]"
+        end
       end
     end
-    str.scan @@property_regex do |curr_match|
-      md = Regexp.last_match
-      whole_match = md[0]
-      captures = md.captures
+    if fetch_types.include? "p"
+      str.scan @@property_regex do |curr_match|
+        md = Regexp.last_match
+        whole_match = md[0]
+        captures = md.captures
 
-      captures.each do |capture|
-        results << "p:#{capture}"
-        #p [whole_match, capture]
-        p "p:[#{capture}]"
+        captures.each do |capture|
+          results << "p:#{capture}"
+          #p [whole_match, capture]
+          p "p:[#{capture}]"
+        end
+      end
+      str.scan @@property_regex2 do |curr_match|
+        md = Regexp.last_match
+        whole_match = md[0]
+        captures = md.captures
+
+        captures.each do |capture|
+          results << "p:#{capture}"
+          #p [whole_match, capture]
+          p "p:[#{capture}]"
+        end
+      end
+      str.scan @@property_regex3 do |curr_match|
+        md = Regexp.last_match
+        whole_match = md[0]
+        captures = md.captures
+
+        captures.each do |capture|
+          results << "p:#{capture}"
+          #p [whole_match, capture]
+          p "p:[#{capture}]"
+        end
       end
     end
    
     results
   end
 
-  def self.genFuncList(path,type = "m")
+  def self.genFuncList(path,type = "m",need_filt=true,fetch_types=["p","f","c"])
     capture_methods = []
     p_methods = []
     funclist_path = "#{path}/func.list"  
@@ -84,11 +114,11 @@ module FuncList
     end
     file_pathes.each do |file_path|
       content = File.read file_path
-      captures = capture content , type 
+      captures = capture content , type , fetch_types
       captures.each do |capture_method| 
         method_type = capture_method.split(":").first
         method_content = capture_method.split(":").last
-        if !method_content.start_with? "init" 
+        if !(method_content.start_with?("init") || method_content.start_with?("set") || method_content.start_with?("_") || method_content.length < 4) || !need_filt
           if method_type == "c" || method_type == "f"
             if !capture_methods.include? capture_method 
               capture_methods << capture_method 

@@ -1,5 +1,14 @@
 require_relative 'filtsymbols.rb'
+
+class String 
+  def upcase_first_letter
+    self.slice(0,1).capitalize + self.slice(1..-1)
+  end
+end
+
 module Obscure  
+
+
   @@TABLENAME="symbols"  
   @@SYMBOL_DB_FILE="symbols"  
   @@STRING_SYMBOL_FILE="func.list"  
@@ -52,9 +61,15 @@ module Obscure
       if result.nil? || result.empty? 
         ramdom = ramdomString
         insertValue line_content  , ramdom  
-        file.puts "#define #{line_content} #{ramdom}"
         if line_type == "p"
-          file.puts "#define _#{line_content} _#{ramdom}"
+          result = FiltSymbols.query("set#{line_content.upcase_first_letter}") 
+          if result.nil? || result.empty? 
+            file.puts "#define #{line_content} #{ramdom}"
+            file.puts "#define _#{line_content} _#{ramdom}"
+            file.puts "#define set#{line_content.upcase_first_letter} set#{ramdom.upcase_first_letter}"
+          end
+        else 
+          file.puts "#define #{line_content} #{ramdom}"
         end
       end 
     end

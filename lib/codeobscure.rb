@@ -28,9 +28,12 @@ module Codeobscure
         options[:load] = v 
       end
 
-      
       opts.on("-r", "--reset", "reset loaded symbols") do |v|
         options[:reset] = true
+      end
+
+      opts.on("-f", "--fetch type1,type2,type3", "fetch and replace type,default type is [c,p,f]") do |v|
+        options[:fetch] = v
       end
 
     end.parse!
@@ -55,13 +58,17 @@ module Codeobscure
       end
     end
 
+    fetch_types = ["p","c","f"]
+    if options[:fetch].length > 0
+      fetch_types = options[:fetch] 
+    end
 
     if options[:obscure]  
 
       xpj_path = options[:obscure]
       if File.exist? xpj_path
         root_dir = xpj_path.split("/")[0...-1].join "/"
-        FuncList.genFuncList root_dir , "all"
+        FuncList.genFuncList root_dir , "all", fetch_types
         header_file = Obscure.run root_dir 
         project = Xcodeproj::Project.open xpj_path
         project_name = xpj_path.split("/").last

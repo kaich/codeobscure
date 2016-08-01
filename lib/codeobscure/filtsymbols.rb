@@ -3,6 +3,7 @@ require "colorize"
 module FiltSymbols
   @@filt_db_path = "#{File.expand_path '../../..', __FILE__}/filtSymbols"
   @@table_name = "symbols"
+  @@key_words = ["interface","NSInteger","BOOL","Class","free","M_PI_2","abort","change","top","bottom","NSUIntegerMax","intoString"]
 
   def self.createTable  
     if !File.exist? @@filt_db_path 
@@ -22,13 +23,17 @@ module FiltSymbols
 
     createTable
     
-    funclist_path = FuncList.genFuncList path , "h"
+    funclist_path = FuncList.genFuncList path , "h" , false
 
     puts "处理中,可能需要一段时间，耐心等候...".colorize(:yellow)
     symbol_file = File.open(funclist_path).read
     symbol_file.each_line do |line|
       line_content = line.rstrip.split(":").last
       insertValue line_content  
+    end
+
+    @@key_words.each do |word|
+      insertValue word
     end
 
     if File.exist? funclist_path  

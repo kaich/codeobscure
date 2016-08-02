@@ -68,7 +68,7 @@ module Codeobscure
       xpj_path = options[:obscure]
       if File.exist? xpj_path
         root_dir = xpj_path.split("/")[0...-1].join "/"
-        FuncList.genFuncList root_dir , "all", fetch_types
+        FuncList.genFuncList root_dir , "all", true, fetch_types
         header_file = Obscure.run root_dir 
         project = Xcodeproj::Project.open xpj_path
         project_name = xpj_path.split("/").last

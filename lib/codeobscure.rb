@@ -59,7 +59,7 @@ module Codeobscure
     end
 
     fetch_types = ["p","c","f"]
-    if options[:fetch].length > 0
+    if !options[:fetch].nil? && options[:fetch].length > 0
       fetch_types = options[:fetch] 
     end
 

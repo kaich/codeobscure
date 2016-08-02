@@ -18,14 +18,18 @@ install it yourself as:
 
 
 	Usage: obscure code for object-c project
-	    -o, --obscure XcodeprojPath      obscure code
-	    -l, --load path1,path2,path3     load filt symbols from path
-	    -r, --reset                      reset loaded symbols
+    -o, --obscure XcodeprojPath      obscure code
+    -l, --load path1,path2,path3     load filt symbols from path
+    -r, --reset                      reset loaded symbols
+    -f, --fetch type1,type2,type3    fetch and replace type,default type is [c,p,f].c for class,p for property,f for function
 
 
 -o [project file path], obscure for the project.    
 -l [path],load filt symbol path. if you don't want obscure code for some direcotry. you can use this option.    
 -r reset loaded filt symbols.
+-f, --fetch type1,type2,type3    fetch and replace type,default type is [c,p,f].c for class,p for property,f for function
+
+codeobscure主要用于oc（目前来说由于swift的特性摆在那里，这种方式不适用于swift）的项目，利用[iOS安全攻防（二十三）：Objective-C代码混淆](http://blog.csdn.net/yiyaaixuexi/article/details/29201699)的方式去进行代码混淆。此工具会默认遍历项目属性，方法和类名进行混淆。当然如果简单的进行遍历的话，会产生无穷无尽的错误，因为你不可能混淆苹果提供给你的官方API，也不能混淆framework和.a的静态编译的库。所以在混淆代码的时候必须排除掉它们。这个工具已经帮你过滤了系统的方法。如果你的项目中使用Pod或者使用了静态库，请使用`codeobscure -l [路径1,路径2..]`的方式去过滤这些库文件。运行`codeobscure -o [项目名.xcodepro]`去调用混淆你的代码，然后耐心等待一会就可以了。当然并不意味这你运行了就一定没错误，改工具最大的简化了混淆代码的工作，由于不同的人编写的代码可能各不相同。假设你调用了`NSClassFromString("classNameA")`而这个类正好被混淆了，它不识别classNameA到底是什么。那么怎么解决这个错误呢。最简单的方式就是在`codeObfuscation.h`中查询classNameA并删除它的#define即可。我测试的项目是有打几年历史的一个项目，代码也挺多的。合理的过滤掉某些不应该混淆的方法。提示错误的仅仅只有一个地方,然后就是运行的时候有几处崩溃，都是因为方法被混淆了，不识别方法导致的，仅仅删除它就可以了。
 
 Example :
 

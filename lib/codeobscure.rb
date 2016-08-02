@@ -32,7 +32,7 @@ module Codeobscure
         options[:reset] = true
       end
 
-      opts.on("-f", "--fetch type1,type2,type3", "fetch and replace type,default type is [c,p,f]") do |v|
+      opts.on("-f", "--fetch type1,type2,type3", "fetch and replace type,default type is [c,p,f].c for class,p for property,f for function") do |v|
         options[:fetch] = v
       end
 

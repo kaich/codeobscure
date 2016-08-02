@@ -33,7 +33,7 @@ codeobscure主要用于oc（目前来说由于swift的特性摆在那里，这�
 
 Example :
 
-	codeobscure -o /Users/mac/Downloads/Examples/Messenger.xcodeproj  -l /Users/mac/Downloads/Examples/Pods >> /Users/mac/Desktop/9.3/1.txt
+	codeobscure -o /Users/mac/Downloads/Examples/Messenger.xcodeproj  -l /Users/mac/Downloads/Examples/Pods
 
 
 

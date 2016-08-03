@@ -12,6 +12,7 @@ module Obscure
   @@TABLENAME="symbols"  
   @@SYMBOL_DB_FILE="symbols"  
   @@STRING_SYMBOL_FILE="func.list"  
+  @@IGNORE_NAME="ignoresymbols"
   
   #维护数据库方便日后作排重  
   def self.createTable  
@@ -38,6 +39,13 @@ module Obscure
     @@HEAD_FILE="#{root_dir}/codeObfuscation.h"  
     @@SYMBOL_DB_FILE = "#{root_dir}/#{@@SYMBOL_DB_FILE}" 
     @@STRING_SYMBOL_FILE = "#{root_dir}/#{@@STRING_SYMBOL_FILE}"
+
+    ignore_symbols = []
+    ignore_path = "#{root_dir}/#{@@IGNORE_NAME}"
+    if File.exist? ignore_path
+      ignore_content = File.read ignore_path
+      ignore_symbols = ignore_content.gsub(" " , "").split "\n"
+    end
     
     if File.exist? @@SYMBOL_DB_FILE
       `rm -f #{@@SYMBOL_DB_FILE}`
@@ -64,12 +72,16 @@ module Obscure
         if line_type == "p"
           result = FiltSymbols.query("set#{line_content.upcase_first_letter}") 
           if result.nil? || result.empty? 
-            file.puts "#define #{line_content} #{ramdom}"
-            file.puts "#define _#{line_content} _#{ramdom}"
-            file.puts "#define set#{line_content.upcase_first_letter} set#{ramdom.upcase_first_letter}"
+            if !ignore_symbols.include?(line_content)
+              file.puts "#define #{line_content} #{ramdom}"
+              file.puts "#define _#{line_content} _#{ramdom}"
+              file.puts "#define set#{line_content.upcase_first_letter} set#{ramdom.upcase_first_letter}"
+            end
           end
         else 
-          file.puts "#define #{line_content} #{ramdom}"
+            if !ignore_symbols.include?(line_content)
+              file.puts "#define #{line_content} #{ramdom}"
+            end
         end
       end 
     end

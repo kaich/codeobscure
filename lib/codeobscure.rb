@@ -9,6 +9,8 @@ require 'optparse'
 
 module Codeobscure
 
+  @@ignore_symbols_path = "ignoresymbols"
+
   def self.root
     File.dirname __dir__
   end
@@ -36,11 +38,26 @@ module Codeobscure
         options[:fetch] = v
       end
 
+      opts.on("-i", "--ignore XcodeprojPath", "create a ignore file, you can write your filt symbols in it.eg:name,age ...") do |v|
+        options[:ignore] = v 
+      end
+
     end.parse!
 
     if options[:reset] 
       `rm -f #{root_dir}/filtSymbols`
       `cp #{root_dir}/filtSymbols_standard #{root_dir}/filtSymbols`
+    end
+
+    if options[:ignore] 
+      xpj_path = options[:ignore]
+      if File.exist? xpj_path
+        root_dir = xpj_path.split("/")[0...-1].join "/"
+        ignore_path = "#{root_dir}/#{@@ignore_symbols_path}"
+        if !File.exist? ignore_path
+          `touch #{ignore_path}`
+        end
+      end
     end
 
     #only load, execute load only
@@ -88,7 +105,7 @@ module Codeobscure
               elsif prefix_header.include? "codeObfuscation.h"
                 puts "#{target.name}:#{build_config}配置文件已配置完成".colorize(:green)
               else 
-                puts "请在#{prefix_header.class.name}中#import \"codeObfuscation.h\"".colorize(:green)
+                puts "请在#{prefix_header}中#import \"codeObfuscation.h\"".colorize(:green)
               end
             end
           end

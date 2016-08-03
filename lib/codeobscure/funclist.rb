@@ -101,7 +101,6 @@ module FuncList
   end
 
   def self.genFuncList(path,type = "m",need_filt=true,fetch_types=["p","f","c"])
-    puts "#######################{fetch_types}"
     capture_methods = []
     p_methods = []
     funclist_path = "#{path}/func.list"  

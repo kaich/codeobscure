@@ -1,26 +1,41 @@
 require_relative "funclist.rb"
+require 'sqlite3'
 require "colorize"
 module FiltSymbols
   @@filt_db_path = "#{File.expand_path '../../..', __FILE__}/filtSymbols"
   @@table_name = "symbols"
   @@key_words = ["interface","NSInteger","BOOL","Class","free","M_PI_2","abort","change","top","bottom","NSUIntegerMax","intoString"]
 
+  def self.open_db 
+    if @@db.nil? || @@db.closed? 
+      @@db = SQLite3::Database.new(@@filt_db_path)
+    end
+  end
+
   def self.createTable  
-    if !File.exist? @@filt_db_path 
-      `echo "create table #{@@table_name}(src text,PRIMARY KEY (src));" | sqlite3 #{@@filt_db_path}` 
+    open_db
+    if @@db 
+      @@db.execute "create table if not exists #{@@table_name}(src text,PRIMARY KEY (src));" 
     end
   end
 
   def self.insertValue(line)  
-    `echo "insert or ignore into #{@@table_name} values('#{line}');" | sqlite3 #{@@filt_db_path}`
+    open_db
+    @@db.execute "insert or ignore into #{@@table_name} values('#{line}');"
   end
 
   def self.query(line) 
-    `echo "select * from #{@@table_name} where src='#{line}';" | sqlite3 #{@@filt_db_path}`
+    open_db
+    results = []
+    @@db.execute "select * from #{@@table_name} where src='#{line}';" do |row|
+      results << row
+    end
+    results
   end
 
   def self.loadFiltSymbols(path) 
 
+    @@db = SQLite3::Database.new(@@filt_db_path)
     createTable
     
     funclist_path = FuncList.genFuncList path , "h" , false
@@ -39,8 +54,6 @@ module FiltSymbols
     if File.exist? funclist_path  
       `rm -f #{funclist_path}`
     end
-
-    `sqlite3 #{@@filt_db_path} .dump`  
 
   end
 

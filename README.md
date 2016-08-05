@@ -29,6 +29,7 @@ install it yourself as:
 			   nick
 			   
 		这些方式都是可以的
+* v0.1.5预览: 将添加`NSClassFromString`以及`setValue:forKeyPath:`等字段过滤，进一步优化运行出现不识别方法崩溃的情况。
 
 `codeobscure -h` for command help. 
 

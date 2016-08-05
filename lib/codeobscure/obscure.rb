@@ -26,7 +26,7 @@ module Obscure
     ignore_path = "#{root_dir}/#{@@IGNORE_NAME}"
     if File.exist? ignore_path
       ignore_content = File.read ignore_path
-      ignore_symbols = ignore_content.gsub(" " , "").split ","
+      ignore_symbols = ignore_content.gsub(/\s/ , "").split ","
     end
     
     if File.exists? @@HEAD_FILE 

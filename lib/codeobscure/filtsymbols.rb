@@ -2,6 +2,7 @@ require_relative "funclist.rb"
 require 'sqlite3'
 require "colorize"
 module FiltSymbols
+  @@db = nil
   @@filt_db_path = "#{File.expand_path '../../..', __FILE__}/filtSymbols"
   @@table_name = "symbols"
   @@key_words = ["interface","NSInteger","BOOL","Class","free","M_PI_2","abort","change","top","bottom","NSUIntegerMax","intoString"]

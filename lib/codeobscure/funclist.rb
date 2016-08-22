@@ -1,5 +1,7 @@
 module FuncList
 
+  require_relative "filtSymbols.rb"
+
   @@func_regex = /\s*(\w+)\s*:\s*\(\s*\w*\s*\s*\w+\s*\*?\s*\)\s*\w+\s*/
   @@func_simple_regex = /\s*[-\+]\s*\(\s*\w+\s*\*?\)\s*(\w+)\s*;*/
   @@hcls_regex = /@interface\s+(\w+)\s*/
@@ -7,6 +9,8 @@ module FuncList
   @@property_regex = /\s*@property\s*\(.*?getter=(\w+).*?\)\s*\w+\s*\*?\s*\w+\s*.*;/
   @@property_regex2 = /\s*@property\s*\(.*?\)\s*\w+\s*\*?\s*(\w+)\s*.*;/
   @@property_regex3 = /\s*@property\s*\(.*?\)\s*\w+\s*<.*>\s*\*?\s*(\w+)\s*.*;/
+  @@value_for_key_filte_regex = /\[\w*\s+setValue\s*:\s*.*\s* forKey\s*:\s*@\"(.*)\"\]/
+  @@class_from_str_regex = /NSClassFromString\(\s*@"(\w+)"\s*\)/
 
   def self.to_utf8(str)
     str = str.force_encoding('UTF-8')
@@ -94,6 +98,30 @@ module FuncList
           #p [whole_match, capture]
           p "p:[#{capture}]"
         end
+      end
+    end
+
+    #---------------记录可能引起崩溃的字段----------------
+    str.scan @@value_for_key_filte_regex do |curr_match|
+      md = Regexp.last_match
+      whole_match = md[0]
+      captures = md.captures
+
+      captures.each do |capture|
+        FiltSymbols.insertValue capture
+        p "过滤的[setValue forkey]数据：#{capture}"
+      end
+    end
+
+
+    str.scan @@class_from_str_regex do |curr_match|
+      md = Regexp.last_match
+      whole_match = md[0]
+      captures = md.captures
+
+      captures.each do |capture|
+        FiltSymbols.insertValue capture
+        p "过滤的[NSClassFromString]数据：#{capture}"
       end
     end
    

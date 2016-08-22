@@ -29,7 +29,7 @@ install it yourself as:
 			   nick
 			   
 		这些方式都是可以的
-* v0.1.5预览: 将添加`NSClassFromString`以及`setValue:forKeyPath:`等字段过滤，进一步优化运行出现不识别方法崩溃的情况。
+* v0.1.5 添加`NSClassFromString`以及`setValue:forKeyPath:`等字段过滤，进一步优化运行出现不识别方法崩溃的情况。添加替换方式[-t]，包括：随机字符 ， 随机单词，自定义替换（目前自定义替换暂未实现，将在0.1.6中实现）
 
 `codeobscure -h` for command help. 
 

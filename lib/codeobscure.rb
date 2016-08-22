@@ -42,6 +42,10 @@ module Codeobscure
         options[:ignore] = v 
       end
 
+      opts.on("-t", "--type replaceType", "obscure type = [r,w,c] ,r: random w: random words c: custom replace rule") do |v|
+        options[:type] = v 
+      end
+
     end.parse!
 
     if options[:reset] 
@@ -86,7 +90,7 @@ module Codeobscure
       if File.exist? xpj_path
         root_dir = xpj_path.split("/")[0...-1].join "/"
         FuncList.genFuncList root_dir , "all", true, fetch_types
-        header_file = Obscure.run root_dir 
+        header_file = Obscure.run root_dir , options[:type]
         project = Xcodeproj::Project.open xpj_path
         project_name = xpj_path.split("/").last
         main_group = project.main_group

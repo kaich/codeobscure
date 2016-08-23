@@ -35,6 +35,8 @@ install it yourself as:
 		r ：#define getHeight ZbgTCtOTDmEazebk
 		w ：#define getHeight nodulatedBasutoland
 		c ：等待实现
+注意：由于苹果反馈了如下的被拒信息,因此提供了更有意义的单词的替换选项[c]：
+![被拒信息](./reject_inform.png)
 	
 
 ####`codeobscure -h` for command help. 

@@ -19,6 +19,8 @@ module Codeobscure
   def self.obscure 
 
     options = {}
+    #默认是随机替换的方式
+    options[:type] = "r"
     OptionParser.new do |opts|
       opts.banner = "Usage: obscure code for object-c project"
 

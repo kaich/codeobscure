@@ -52,7 +52,8 @@ module Obscure
     when "c"
       result = 3
     else
-      raise "该参数不符合！"
+      puts "若参数不符合规则，默认切换到[r]的规则形式进行替换！".colorize(:yellow)
+      result = 1
     end
 
     result

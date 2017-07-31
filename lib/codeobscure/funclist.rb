@@ -9,6 +9,7 @@ module FuncList
   @@property_regex = /\s*@property\s*\(.*?getter=(\w+).*?\)\s*\w+\s*\*?\s*\w+\s*.*;/
   @@property_regex2 = /\s*@property\s*\(.*?\)\s*\w+\s*\*?\s*(\w+)\s*.*;/
   @@property_regex3 = /\s*@property\s*\(.*?\)\s*\w+\s*<.*>\s*\*?\s*(\w+)\s*.*;/
+  #---------------filter regex----------------
   @@value_for_key_filte_regex = /\[\w*\s+setValue\s*:\s*.*\s* forKey\s*:\s*@\"(.*)\"\]/
   @@class_from_str_regex = /NSClassFromString\(\s*@"(\w+)"\s*\)/
 

@@ -51,8 +51,9 @@ module Codeobscure
     end.parse!
 
     if options[:reset] 
-      `rm -f #{root_dir}/filtSymbols`
-      `cp #{root_dir}/filtSymbols_standard #{root_dir}/filtSymbols`
+      `rm -f #{root}/filtSymbols`
+      `cp #{root}/filtSymbols_standard #{root}/filtSymbols`
+      puts "重置完毕!".colorize(:green)
     end
 
     if options[:ignore] 

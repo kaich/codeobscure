@@ -118,6 +118,8 @@ module Codeobscure
           end
         end
         project.save
+        #Fix bug for SIP
+        system "chmod 755 #{xpj_path}/project.pbxproj"
         puts "配置完成!".colorize(:green)
         puts "请直接运行项目，如果项目中出现类似: `+[LoremIpsum PyTJvHwWNmeaaVzp:]: unrecognized selector sent to class`。在codeObfuscation.h中查询PyTJvHwWNmeaaVzp并删除它!".colorize(:yellow)
       else 

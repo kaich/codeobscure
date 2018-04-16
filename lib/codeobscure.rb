@@ -77,7 +77,7 @@ module Codeobscure
           FiltSymbols.loadFiltSymbols load_path 
           puts "加载完毕!".colorize(:green)
         else 
-          puts "指定的目录不存在:#{path}".colorize(:red)
+          puts "指定的目录不存在:#{load_path}".colorize(:red)
         end
       end
     end

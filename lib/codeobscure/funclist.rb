@@ -12,6 +12,14 @@ module FuncList
   #---------------filter regex----------------
   @@value_for_key_filte_regex = /\[\w*\s+setValue\s*:\s*.*\s* forKey\s*:\s*@\"(.*)\"\]/
   @@class_from_str_regex = /NSClassFromString\(\s*@"(\w+)"\s*\)/
+  @@func_filt_keys = ["IBAction"]
+
+  def self.validate?(str, type) 
+    for filt_key  in @@func_filt_keys
+       return false if str.include? filt_key 
+    end
+    return true
+  end
 
   def self.to_utf8(str)
     str = str.force_encoding('UTF-8')
@@ -28,10 +36,12 @@ module FuncList
         whole_match = md[0]
         captures = md.captures
 
-        captures.each do |capture|
-          results << "f:#{capture}"
-          #p [whole_match, capture]
-          p "f:[#{capture}]"
+        if validate? curr_match , 'f' 
+          captures.each do |capture|
+            results << "f:#{capture}"
+            #p [whole_match, capture]
+            p "f:[#{capture}]"
+          end
         end
       end
       #no arguments function
@@ -40,10 +50,12 @@ module FuncList
         whole_match = md[0]
         captures = md.captures
 
-        captures.each do |capture|
-          results << "f:#{capture}"
-          #p [whole_match, capture]
-          p "f:[#{capture}]"
+        if validate? curr_match , 'f' 
+          captures.each do |capture|
+            results << "f:#{capture}"
+            #p [whole_match, capture]
+            p "f:[#{capture}]"
+          end
         end
       end
     end

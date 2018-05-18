@@ -2,7 +2,8 @@ module FuncList
 
   require_relative "filtSymbols.rb"
 
-  @@func_regex = /\s*(\w+)\s*:\s*\(\s*\w*\s*\s*\w+\s*\*?\s*\)\s*\w+\s*/
+  # @@func_regex = /\s*(\w+)\s*:\s*\(\s*\w*\s*\s*\w+\s*\*?\s*\)\s*\w+\s*/
+  @@func_regex = /\s*[-\+]\s*(\w+)\s*:\s*\(\s*\w*\s*\s*\w+\s*\*?\s*\)\s*\w+\s*/
   @@func_simple_regex = /\s*[-\+]\s*\(\s*\w+\s*\*?\)\s*(\w+)\s*;*/
   @@hcls_regex = /@interface\s+(\w+)\s*/
   @@mcls_regex = /@implementation\s+(\w+)\s*/
@@ -36,7 +37,7 @@ module FuncList
         whole_match = md[0]
         captures = md.captures
 
-        if validate? curr_match , 'f' 
+        if validate? whole_match , 'f' 
           captures.each do |capture|
             results << "f:#{capture}"
             #p [whole_match, capture]
@@ -50,7 +51,7 @@ module FuncList
         whole_match = md[0]
         captures = md.captures
 
-        if validate? curr_match , 'f' 
+        if validate? whole_match , 'f' 
           captures.each do |capture|
             results << "f:#{capture}"
             #p [whole_match, capture]

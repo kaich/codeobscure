@@ -58,7 +58,7 @@ install it yourself as:
 #### 使用及原理说明
 codeobscure主要用于oc（目前来说由于swift的特性摆在那里，这种方式不适用于swift）的项目，利用[iOS安全攻防（二十三）：Objective-C代码混淆](http://blog.csdn.net/yiyaaixuexi/article/details/29201699)的方式去进行代码混淆,纯粹的娱乐自己恶心他人。		
 
-此工具会默认遍历项目属性，方法和类名进行混淆。当然如果简单的进行遍历的话，会产生无穷无尽的错误，因为你不可能混淆苹果提供给你的官方API，也不能混淆framework和.a的静态编译的库。所以在混淆代码的时候必须排除掉它们。我已经帮你过滤了系统的方法。如果你的项目中使用Pod或者使用了静态库，或者其他比较特别的第三方库，请使用`codeobscure -l [路径1,路径2..]`的方式去过滤这些库文件。运行`codeobscure -o [项目名.xcodepro]`去调用混淆你的代码，然后耐心等待一会就可以了。
+此工具会默认遍历项目属性，方法和类名进行混淆。当然如果简单的进行遍历的话，会产生无穷无尽的错误，`因为你不可能混淆苹果提供给你的官方API，也不能混淆framework和.a的静态编译的库`。所以在混淆代码的时候必须排除掉它们。我已经帮你过滤了系统的方法。如果你的项目中使用Pod或者使用了静态库，或者其他比较特别的第三方库，请使用`codeobscure -l [路径1,路径2..]`的方式去过滤这些库文件。运行`codeobscure -o [项目名.xcodepro]`去调用混淆你的代码，然后耐心等待一会就可以了。
 		
 当然并不意味这你运行了就一定没错误，该工具最大的简化了混淆代码的工作，由于不同的人编写的代码可能各不相同。假设你调用了`NSClassFromString("classNameA")`而这个类正好被混淆了，它不识别classNameA到底是什么。那么怎么解决这个错误呢。最简单的方式就是在`codeObfuscation.h`中查询classNameA并删除它的#define即可。		
 
@@ -79,6 +79,7 @@ Example :
 	codeobscure -o /Users/mac/Downloads/Examples/Messenger.xcodeproj  -l /Users/mac/Downloads/Examples/Pods,/Users/mac/Downloads/Examples/Download
 
 实例2：仅仅混淆方法和类名
+
 	codeobscure -o /Users/mac/Downloads/Examples/Messenger.xcodeproj -f f,c
 
 ***注意:  由于苹果新版系统有[SIP(系统完整性保护)](https://support.apple.com/zh-cn/HT204899)默认是开启的，所以由于安装方式不同，可能在运行命令的时候出现:`attempt to write a readonly database (SQLite3::ReadOnlyException)`的问题。如果出现这个问题，请在命令行上加上`sudo`。***

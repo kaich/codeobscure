@@ -72,9 +72,14 @@ codeobscure主要用于oc（目前来说由于swift的特性摆在那里，这�
 如果有什么不好用的地方，直接写到issue，我会尽量让它更好用。
 
 `-l`可以接多路劲，用逗号分割，如下：		
+
+实例：混淆方法、类名、属性， 过滤Pods和Download
 Example :
 
 	codeobscure -o /Users/mac/Downloads/Examples/Messenger.xcodeproj  -l /Users/mac/Downloads/Examples/Pods,/Users/mac/Downloads/Examples/Download
+
+实例2：仅仅混淆方法和类名
+	codeobscure -o /Users/mac/Downloads/Examples/Messenger.xcodeproj -f f,c
 
 ***注意:  由于苹果新版系统有[SIP(系统完整性保护)](https://support.apple.com/zh-cn/HT204899)默认是开启的，所以由于安装方式不同，可能在运行命令的时候出现:`attempt to write a readonly database (SQLite3::ReadOnlyException)`的问题。如果出现这个问题，请在命令行上加上`sudo`。***
 

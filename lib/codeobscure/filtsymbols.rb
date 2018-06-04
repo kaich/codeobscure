@@ -39,7 +39,7 @@ module FiltSymbols
     @@db = SQLite3::Database.new(@@filt_db_path)
     createTable
     
-    funclist_path = FuncList.genFuncList path , "h" , false
+    funclist_path = FuncList.genFuncList path , "all" , false
 
     puts "处理中,可能需要一段时间，耐心等候...".colorize(:yellow)
     symbol_file = File.open(funclist_path).read

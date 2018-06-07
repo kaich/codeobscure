@@ -60,22 +60,26 @@ module FuncList
         end
       end
     end
-    cls_regex = ""
-    if type == "h"
-      cls_regex = @@hcls_regex
+    cls_regexs = ""
+    if type == "all"
+      cls_regexs = [@@hcls_regex,@@mcls_regex]
+    elsif type == "h" 
+      cls_regexs = [@@hcls_regex]
     else
-      cls_regex = @@mcls_regex
+      cls_regexs = [@@mcls_regex]
     end
-    if fetch_types.include? "c"
-      str.scan cls_regex do |curr_match|
-        md = Regexp.last_match
-        whole_match = md[0]
-        captures = md.captures
+    cls_regexs.each do |cls_regex|
+      if fetch_types.include? "c"
+        str.scan cls_regex do |curr_match|
+          md = Regexp.last_match
+          whole_match = md[0]
+          captures = md.captures
 
-        captures.each do |capture|
-          results << "c:#{capture}"
-          #p [whole_match, capture]
-          p "c:[#{capture}]"
+          captures.each do |capture|
+            results << "c:#{capture}"
+            #p [whole_match, capture]
+            p "c:[#{capture}]"
+          end
         end
       end
     end

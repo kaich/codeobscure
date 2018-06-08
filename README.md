@@ -1,14 +1,12 @@
 # Codeobscure
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/codeobscure`. To experiment with that code, run `bin/console` for an interactive prompt.
+##Introduce
 
-TODO: Delete this and the text above, and describe your gem
+该项目主要用于OC混淆代码，如果您的项目有安全需求。想避免`class-dump`来解读您的代码，你不妨使用该项目。该工具基本全自动运行，设置得当基本不需要额外的对工程进行操作。如果有问题欢迎反馈，我会及时修复！ 
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-install it yourself as:
+运行如下命令：
 
     $ gem install codeobscure
 

@@ -1,19 +1,22 @@
 module FuncList
 
   require_relative "filtSymbols.rb"
+  require 'pathname'
 
   # @@func_regex = /\s*(\w+)\s*:\s*\(\s*\w*\s*\s*\w+\s*\*?\s*\)\s*\w+\s*/
   @@func_regex = /\s*[-\+]\s*(\w+)\s*:\s*\(\s*\w*\s*\s*\w+\s*\*?\s*\)\s*\w+\s*/
   @@func_simple_regex = /\s*[-\+]\s*\(\s*\w+\s*\*?\)\s*(\w+)\s*;*/
-  @@hcls_regex = /@interface\s+(\w+)\s*/
+  @@hcls_regex = /@interface\s+(\w+)\s*:\s*(\w+)/
   @@mcls_regex = /@implementation\s+(\w+)\s*/
   @@property_regex = /\s*@property\s*\(.*?getter=(\w+).*?\)\s*\w+\s*\*?\s*\w+\s*.*;/
   @@property_regex2 = /\s*@property\s*\(.*?\)\s*\w+\s*\*?\s*(\w+)\s*.*;/
   @@property_regex3 = /\s*@property\s*\(.*?\)\s*\w+\s*<.*>\s*\*?\s*(\w+)\s*.*;/
   #---------------filter regex----------------
+  @@storyboard_filt_regex = /customClass="(\w+)"/
   @@value_for_key_filte_regex = /\[\w*\s+setValue\s*:\s*.*\s* forKey\s*:\s*@\"(.*)\"\]/
   @@class_from_str_regex = /NSClassFromString\(\s*@"(\w+)"\s*\)/
   @@func_filt_keys = ["IBAction"]
+  @@cls_filt_keys = ["NSManagedObject"]
 
   def self.validate?(str, type) 
     for filt_key  in @@func_filt_keys
@@ -28,9 +31,26 @@ module FuncList
     str.encode("UTF-8", 'binary', invalid: :replace, undef: :replace, replace: '')
   end
 
-  def self.capture(content_str,type = "m",fetch_types=["p","f","c"]) 
-    results = []
+  def self.capture(content_str,type = "m",fetch_types=["p","f","c"],file_path=nil,is_need_filt=false) 
     str = to_utf8 content_str
+
+    #filter file  
+    if file_path.include? ".storyboard" 
+      str.scan @@storyboard_filt_regex do |curr_match|
+        md = Regexp.last_match
+        whole_match = md[0]
+        captures = md.captures
+
+        captures.each do |capture|
+          FiltSymbols.insertValue capture
+          p "过滤的#{File.basename(file_path)}数据：#{capture}"
+        end
+      end
+      return []
+    end
+
+    # begin capture 
+    results = []
     if fetch_types.include? "f"
       str.scan @@func_regex do |curr_match|
         md = Regexp.last_match
@@ -76,6 +96,14 @@ module FuncList
           captures = md.captures
 
           captures.each do |capture|
+            if is_need_filt 
+              if @@cls_filt_keys.include? capture 
+                puts "过滤类#{capture}..."
+                if file_path 
+                  FiltSymbols.loadFiltSymbols file_path
+                end
+              end 
+            end
             results << "c:#{capture}"
             #p [whole_match, capture]
             p "c:[#{capture}]"
@@ -118,7 +146,6 @@ module FuncList
         end
       end
     end
-
     #---------------记录可能引起崩溃的字段----------------
     str.scan @@value_for_key_filte_regex do |curr_match|
       md = Regexp.last_match
@@ -131,7 +158,6 @@ module FuncList
       end
     end
 
-
     str.scan @@class_from_str_regex do |curr_match|
       md = Regexp.last_match
       whole_match = md[0]
@@ -142,7 +168,6 @@ module FuncList
         p "过滤的[NSClassFromString]数据：#{capture}"
       end
     end
-   
     results
   end
 
@@ -150,6 +175,9 @@ module FuncList
     capture_methods = []
     p_methods = []
     funclist_path = "#{path}/func.list"  
+    if File.file?(path) 
+      funclist_path = "#{File.dirname(path)}/func.list"
+    end
     file = File.open(funclist_path, "w")
     file_pathes = []
     if type == "h" || type == "m"
@@ -158,9 +186,11 @@ module FuncList
       file_pathes += `find #{path} -name "*.h" -d`.split "\n"
       file_pathes += `find #{path} -name "*.m" -d`.split "\n"
     end
+    file_pathes += `find #{path} -name "*.storyboard" -d`.split "\n"
+
     file_pathes.each do |file_path|
       content = File.read file_path
-      captures = capture content , type , fetch_types
+      captures = capture content , type , fetch_types, file_path, need_filt
       captures.each do |capture_method| 
         method_type = capture_method.split(":").first
         method_content = capture_method.split(":").last

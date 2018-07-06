@@ -35,6 +35,7 @@
 		c ：等待实现
 注意：由于苹果反馈了如下的被拒信息,因为目前可以用w选项,之后会提供更有意义的单词的替换选项[c]：
 ![被拒信息](./reject_inform.png)
+* v0.1.6.3 添加了对storyboard的过滤，避免ViewController类被混淆了引起崩溃的问题。注意：如果是xib请自行过滤，在后面版本会添加xib的过滤。
 	
 
 #### `codeobscure -h` for command help. 

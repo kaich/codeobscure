@@ -2,6 +2,7 @@ require "codeobscure/version"
 require "codeobscure/funclist"
 require "codeobscure/obscure"
 require "codeobscure/filtsymbols"
+require "codeobscure/imagemix"
 require "colorize"
 require 'xcodeproj'
 require 'fileutils'
@@ -36,7 +37,7 @@ module Codeobscure
         options[:reset] = true
       end
 
-      opts.on("-f", "--fetch type1,type2,type3", "fetch and replace type,default type is [c,p,f].c for class,p for property,f for function") do |v|
+      opts.on("-f", "--fetch type1,type2,type3", "fetch and replace type,default type is [c,p,f,i].c for class,p for property,f for function") do |v|
         options[:fetch] = v
       end
 
@@ -92,6 +93,7 @@ module Codeobscure
       xpj_path = options[:obscure]
       if File.exist? xpj_path
         root_dir = xpj_path.split("/")[0...-1].join "/"
+        ImageMix.mix root_dir
         FuncList.genFuncList root_dir , "h", true, fetch_types
         header_file = Obscure.run root_dir , options[:type]
         project = Xcodeproj::Project.open xpj_path

@@ -35,7 +35,7 @@ module FuncList
     str = to_utf8 content_str
 
     #filter file  
-    if file_path.include? ".storyboard" 
+    if file_path.include?(".storyboard") || file_path.include?(".xib")  
       str.scan @@storyboard_filt_regex do |curr_match|
         md = Regexp.last_match
         whole_match = md[0]
@@ -187,6 +187,7 @@ module FuncList
       file_pathes += `find #{path} -name "*.m" -d`.split "\n"
     end
     file_pathes += `find #{path} -name "*.storyboard" -d`.split "\n"
+    file_pathes += `find #{path} -name "*.xib" -d`.split "\n"
 
     file_pathes.each do |file_path|
       content = File.read file_path

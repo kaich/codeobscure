@@ -46,7 +46,8 @@
 
 #### `codeobscure -h` for command help. 
 
-	使用工具是时候，路径直接用绝对路径，不支持相对路径。（直接把文件拖到终端显示出来的路径就是绝对路径）
+使用工具是时候，路径直接用绝对路径，不支持相对路径。（直接把文件拖到终端显示出来的路径就是绝对路径）
+
 
 	Usage: obscure code for object-c project
     -o, --obscure XcodeprojPath      obscure code
@@ -103,7 +104,7 @@ Example :
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/codeobscure. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/kaich/codeobscure. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 
 ## License

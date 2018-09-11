@@ -10,7 +10,7 @@
 * [austinzheng/iOS-2048](https://github.com/austinzheng/iOS-2048)
 
 
-## 演示
+## 演示（项目：iOS-2048）
 
 ![ScreenShot Gif](./screen_shot.gif)
 

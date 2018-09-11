@@ -9,6 +9,12 @@
 * [vanyaland/ToThePenny](https://github.com/vanyaland/ToThePenny)
 * [austinzheng/iOS-2048](https://github.com/austinzheng/iOS-2048)
 
+
+## 演示：
+
+![ScreenShot Gif](./screen_shot.gif))
+
+
 ## Installation
 
 运行如下命令：

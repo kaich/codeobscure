@@ -4,15 +4,15 @@
 
 该项目主要用于OC混淆代码，如果您的项目有安全需求。想避免`class-dump`来解读您的代码，你不妨使用该项目。该工具基本全自动运行，设置得当基本不需要额外的对工程进行操作。如果有问题欢迎反馈，我会及时修复！ 
 
-该工具经过随机开源项目的测试，测试项目如下，具有非常好的通用性。
+该工具经过随机开源项目的测试，测试项目如下，具有非常好的通用性，并且一步完成混淆工作。
 
 * [vanyaland/ToThePenny](https://github.com/vanyaland/ToThePenny)
 * [austinzheng/iOS-2048](https://github.com/austinzheng/iOS-2048)
 
 
-## 演示：
+## 演示
 
-![ScreenShot Gif](./screen_shot.gif))
+![ScreenShot Gif](./screen_shot.gif)
 
 
 ## Installation

@@ -4,8 +4,8 @@ module FuncList
   require 'pathname'
 
   # @@func_regex = /\s*(\w+)\s*:\s*\(\s*\w*\s*\s*\w+\s*\*?\s*\)\s*\w+\s*/
-  @@func_regex = /\s*[-\+]\s*(\w+)\s*:\s*\(\s*\w*\s*\s*\w+\s*\*?\s*\)\s*\w+\s*/
-  @@func_simple_regex = /\s*[-\+]\s*\(\s*\w+\s*\*?\)\s*(\w+)\s*;*/
+  @@func_regex = /\s*[-\+]\s*\(.*?\)\s*(\w+)\s*:\s*\(\s*\w*\s*\s*\w+\s*\*?\s*\)\s*\w+\s*/
+  @@func_simple_regex = /\s*[-\+]\s*\(.*?\)\s*(\w+)\s*;*/
   @@hcls_regex = /@interface\s+(\w+)\s*:\s*(\w+)/
   @@mcls_regex = /@implementation\s+(\w+)\s*/
   @@property_regex = /\s*@property\s*\(.*?getter=(\w+).*?\)\s*\w+\s*\*?\s*\w+\s*.*;/

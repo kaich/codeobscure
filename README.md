@@ -61,12 +61,13 @@
     -r, --reset                      reset loaded symbols
     -f, --fetch type1,type2,type3    fetch and replace type,default type is [c,p,f].c for class,p for property,f for function
     -i, --ignore XcodeprojPath       create a ignore file, you can write your filt symbols in it.eg:name,age ...
-
+	-t, --type replaceType           obscure type = [r,w,c] ,r: random w: random words c: custom replace rule
 
 * -o [Xcodeproj后缀的项目文件].    
 * -l [路径] 加载要过滤文件的路劲. 如果你不想混淆某些文件，用这个参数。   
 * -r 重置已加载的过滤的字符，-l的过滤文件字符会保存起来，如果你下一次不需要过滤这些文件，请用该命令重置一下.
 * -f, --fetch type1,type2,type3    获取需要混淆的类型,默认参数是c,p,f。也就是类名，属性和方法。c代表类名，p代表属性，f代表方法。
+* -5 r、w、c   替换的文本形式  r：随机字符串  w：单词  c：自定义。自定义模式暂未实现。
 
 #### 使用及原理说明
 codeobscure主要用于oc（目前来说由于swift的特性摆在那里，这种方式不适用于swift）的项目，利用[iOS安全攻防（二十三）：Objective-C代码混淆](http://blog.csdn.net/yiyaaixuexi/article/details/29201699)的方式去进行代码混淆,纯粹的娱乐自己恶心他人。		

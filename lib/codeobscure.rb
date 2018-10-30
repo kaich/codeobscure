@@ -103,7 +103,7 @@ module Codeobscure
           main_group.new_reference header_file 
         end
         project.targets.each do |target|
-          if target.name = project_name  
+          if target.name == project_name  
             build_configs = target.build_configurations
             build_configs.each do |build_config| 
               build_settings = build_config.build_settings

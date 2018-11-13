@@ -12,6 +12,7 @@ module FuncList
   @@property_regex2 = /\s*@property\s*\(.*?\)\s*\w+\s*\*?\s*(\w+)\s*.*;/
   @@property_regex3 = /\s*@property\s*\(.*?\)\s*\w+\s*<.*>\s*\*?\s*(\w+)\s*.*;/
   #---------------filter regex----------------
+  @@strict_filt_regex = /@"(\w+?)"/
   @@storyboard_filt_regex = /customClass="(\w+)"/
   @@value_for_key_filte_regex = /\[\w*\s+setValue\s*:\s*.*\s* forKey\s*:\s*@\"(.*)\"\]/
   @@class_from_str_regex = /NSClassFromString\(\s*@"(\w+)"\s*\)/
@@ -229,6 +230,21 @@ module FuncList
     end
     file.close
     funclist_path
+  end
+
+
+  def self.loadStrictSymbols(content_str) 
+    str = to_utf8 content_str
+    str.scan @@strict_filt_regex do |curr_match|
+      md = Regexp.last_match
+      whole_match = md[0]
+      captures = md.captures
+
+      captures.each do |capture|
+        FiltSymbols.insertValue capture
+        p "执行严格模式过滤：#{capture}"
+      end
+    end
   end
   
 end

@@ -5,7 +5,7 @@ module FiltSymbols
   @@db = nil
   @@filt_db_path = "#{File.expand_path '../../..', __FILE__}/filtSymbols"
   @@table_name = "symbols"
-  @@key_words = ["interface","NSInteger","BOOL","Class","free","M_PI_2","abort","change","top","bottom","NSUIntegerMax","intoString"]
+  @@key_words = ["interface","NSInteger","BOOL","Class","free","M_PI_2","abort","change","top","bottom","NSUIntegerMax","intoString","readonly"]
 
   def self.open_db 
     if @@db.nil? || @@db.closed? 
@@ -56,6 +56,19 @@ module FiltSymbols
       `rm -f #{funclist_path}`
     end
 
+  end
+
+
+  def self.loadStrictMode(path) 
+    file_pathes = []
+    file_pathes += `find #{path} -name "*.h" -d`.split "\n"
+    file_pathes += `find #{path} -name "*.m" -d`.split "\n"
+    
+    file_pathes.each do |file_path|
+      content = File.read file_path
+      FuncList.loadStrictSymbols content
+    end
+    
   end
 
 end

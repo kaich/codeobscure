@@ -37,7 +37,7 @@ module Codeobscure
         options[:reset] = true
       end
 
-      opts.on("-f", "--fetch type1,type2,type3", "fetch and replace type,default type is [c,p,f,i].c for class,p for property,f for function") do |v|
+      opts.on("-f", "--fetch type1,type2,type3", "fetch and replace type,default type is [c,p,f,i]. c for class, p for property, f for function") do |v|
         options[:fetch] = v
       end
 
@@ -47,6 +47,10 @@ module Codeobscure
 
       opts.on("-t", "--type replaceType", "obscure type = [r,w,c] ,r: random w: random words c: custom replace rule") do |v|
         options[:type] = v 
+      end
+
+      opts.on("-s", "--strict", "strict mode. It will filter all string. If there are many kvo in code, please add -s.") do |v|
+        options[:strict] = true
       end
 
     end.parse!
@@ -88,12 +92,17 @@ module Codeobscure
       fetch_types = options[:fetch] 
     end
 
+
     if options[:obscure]  
 
       xpj_path = options[:obscure]
       if File.exist? xpj_path
         root_dir = xpj_path.split("/")[0...-1].join "/"
         ImageMix.mix root_dir
+        if options[:strict] 
+          FiltSymbols.loadStrictMode root_dir
+          puts "准备严格模式完成!".colorize(:green)
+        end
         FuncList.genFuncList root_dir , "h", true, fetch_types
         header_file = Obscure.run root_dir , options[:type]
         project = Xcodeproj::Project.open xpj_path

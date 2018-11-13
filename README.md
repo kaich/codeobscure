@@ -22,6 +22,37 @@
     $ gem install codeobscure
 
 ## Usage
+
+
+#### 使用实例
+
+`-l`可以接多路劲，用逗号分割，如下：		
+
+实例1：混淆方法、类名、属性， 过滤Pods和Download
+Example :
+
+	codeobscure -o /Users/mac/Downloads/Examples/Messenger.xcodeproj  -l /Users/mac/Downloads/Examples/Pods,/Users/mac/Downloads/Examples/Download
+
+实例2：仅仅混淆方法和类名
+
+	codeobscure -o /Users/mac/Downloads/Examples/Messenger.xcodeproj -f f,c
+
+实例3：生成ignoresymbols文件，用于写入要过滤的关键字
+
+	codeobscure -i XcodeprojPath	
+
+实例4： 重置-l记录的要过滤的关键字
+
+	codeobscure -r 
+
+实例5：严格模式过滤，并且用单词模式进行替换。(如果代码中含有很多的KVO以及Runtime代码，使用严格模式，会更好的帮助你。)
+
+	codeobscure -o /Users/mac/Downloads/Examples/Messenger.xcodeproj -t w -s
+	
+
+***注意:  由于苹果新版系统有[SIP(系统完整性保护)](https://support.apple.com/zh-cn/HT204899)默认是开启的，所以由于安装方式不同，可能在运行命令的时候出现:`attempt to write a readonly database (SQLite3::ReadOnlyException)`的问题。如果出现这个问题，请在命令行上加上`sudo`。***
+
+
 #### 版本说明
 * v0.1.2添加`-i`选项，执行这个选项会创建一个`ignoresymbols`文件，在这个文件中填写你要忽略的方法、属性或类名(英文逗号分割)。它仅仅作用于你的这个项目，和`-l`不一样，它不会被记录下来。假设你在`-l`过滤某些名称后，项目中仍然有某些名称冲突了，这个选项更方便你使用它，把冲突名称写入`ignoresymbols`，然后运行`-o`重新生成混淆文件。
 * v0.1.3 优化`-l`和`-o`的性能，提高运行速度
@@ -48,7 +79,7 @@
 ![被拒信息](./reject_inform.png)
 * v0.1.6.3 添加了对storyboard的过滤，避免ViewController类被混淆了引起崩溃的问题。注意：如果是xib请自行过滤，在后面版本会添加xib的过滤。
 * v0.1.6.5 添加了对xib的过滤，避免ViewController类被混淆了引起崩溃的问题。添加对png等图片资源进行混淆功能。默认开启。
-	
+* v0.1.7.0 添加了严格模式。适用于KVO和Runtime较多的代码，普通代码也可以使用。
 
 #### `codeobscure -h` for command help. 
 
@@ -68,8 +99,10 @@
 * -r 重置已加载的过滤的字符，-l的过滤文件字符会保存起来，如果你下一次不需要过滤这些文件，请用该命令重置一下.
 * -f, --fetch type1,type2,type3    获取需要混淆的类型,默认参数是c,p,f。也就是类名，属性和方法。c代表类名，p代表属性，f代表方法。
 * -t r、w、c   替换的文本形式  r：随机字符串  w：单词  c：自定义。自定义模式暂未实现。
+* -s 严格模式, 适用于KVO和Runtime比较多的代码。普通代码也可以使用。
 
 #### 使用及原理说明
+
 codeobscure主要用于oc（目前来说由于swift的特性摆在那里，这种方式不适用于swift）的项目，利用[iOS安全攻防（二十三）：Objective-C代码混淆](http://blog.csdn.net/yiyaaixuexi/article/details/29201699)的方式去进行代码混淆,纯粹的娱乐自己恶心他人。		
 
 此工具会默认遍历项目属性，方法和类名进行混淆。当然如果简单的进行遍历的话，会产生无穷无尽的错误，`因为你不可能混淆苹果提供给你的官方API，也不能混淆framework和.a的静态编译的库`。所以在混淆代码的时候必须排除掉它们。我已经帮你过滤了系统的方法。如果你的项目中使用Pod或者使用了静态库，或者其他比较特别的第三方库，请使用`codeobscure -l [路径1,路径2..]`的方式去过滤这些库文件。运行`codeobscure -o [项目名.xcodepro]`去调用混淆你的代码，然后耐心等待一会就可以了。
@@ -84,30 +117,6 @@ codeobscure主要用于oc（目前来说由于swift的特性摆在那里，这�
 注意：如果你运行了`codeobscure -l [路径1,路径2..]`,那么它会记录下来要过滤的东西。如果你下次不想过滤已经过滤的库，运行`codeobscure -r`来重置。
 
 如果有什么不好用的地方，直接写到issue，我会尽量让它更好用。
-
-#### 使用实例
-
-`-l`可以接多路劲，用逗号分割，如下：		
-
-实例1：混淆方法、类名、属性， 过滤Pods和Download
-Example :
-
-	codeobscure -o /Users/mac/Downloads/Examples/Messenger.xcodeproj  -l /Users/mac/Downloads/Examples/Pods,/Users/mac/Downloads/Examples/Download
-
-实例2：仅仅混淆方法和类名
-
-	codeobscure -o /Users/mac/Downloads/Examples/Messenger.xcodeproj -f f,c
-
-实例3：生成ignoresymbols文件，用于写入要过滤的关键字
-
-	codeobscure -i XcodeprojPath	
-
-实例4： 重置-l记录的要过滤的关键字
-
-	codeobscure -r 
-
-***注意:  由于苹果新版系统有[SIP(系统完整性保护)](https://support.apple.com/zh-cn/HT204899)默认是开启的，所以由于安装方式不同，可能在运行命令的时候出现:`attempt to write a readonly database (SQLite3::ReadOnlyException)`的问题。如果出现这个问题，请在命令行上加上`sudo`。***
-
 
 ## Contributing
 

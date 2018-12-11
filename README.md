@@ -105,7 +105,7 @@ Example :
 * v0.1.6.3 添加了对storyboard的过滤，避免ViewController类被混淆了引起崩溃的问题。注意：如果是xib请自行过滤，在后面版本会添加xib的过滤。
 * v0.1.6.5 添加了对xib的过滤，避免ViewController类被混淆了引起崩溃的问题。添加对png等图片资源进行混淆功能。默认开启。
 * v0.1.7.0 添加了严格模式。适用于KVO和Runtime较多的代码，普通代码也可以使用。
- 
+* v0.1.7.1 避免过度混淆。保留Cell, ViewController等常用关键字。 
   
 
 ### 使用及原理说明

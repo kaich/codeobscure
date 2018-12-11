@@ -12,9 +12,12 @@ module Obscure
 
   @@STRING_SYMBOL_FILE="func.list"  
   @@IGNORE_NAME="ignoresymbols"
+  #项目特征，避免过度混淆被识别
+  @@PROJECT_TRAIT = ["Model", "View", "Cell", "Button", "ViewController", "TableView", "CollectionView", "Control", "Entity", "Delegate"]
  
   #type 1 ：随机字符, 2 : 随机单词, 3 : 自定义单词替换
-  def self.ramdomString(var_type , replace_type = 1)  
+  #reference_content 原来准备替换的内容， 避免过度混淆
+  def self.ramdomString(var_type , replace_type = 1, reference_content = nil)  
     result = ""
     case replace_type 
     when 1
@@ -38,6 +41,14 @@ module Obscure
       raise "c选项功能暂未实现，下一版本中加入！"
     end
   
+    for trait in @@PROJECT_TRAIT do
+      if reference_content 
+        if reference_content.end_with? trait 
+          result += trait
+          break
+        end
+      end
+    end
 
     result
   end
@@ -90,7 +101,7 @@ module Obscure
       line_content = line.rstrip.split(":").last
       result = FiltSymbols.query(line_content) 
       if result.nil? || result.empty? 
-        ramdom = ramdomString line_type , replace_type
+        ramdom = ramdomString line_type , replace_type, line_content
         if line_type == "p"
           result = FiltSymbols.query("set#{line_content.upcase_first_letter}") 
           if result.nil? || result.empty? 

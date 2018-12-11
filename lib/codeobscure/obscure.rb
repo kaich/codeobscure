@@ -12,8 +12,8 @@ module Obscure
 
   @@STRING_SYMBOL_FILE="func.list"  
   @@IGNORE_NAME="ignoresymbols"
-  #项目特征，避免过度混淆被识别
-  @@PROJECT_TRAIT = ["Model", "View", "Cell", "Button", "ViewController", "TableView", "CollectionView", "Control", "Entity", "Delegate"]
+  #保留项目特征，避免过度混淆被识别
+  @@PROJECT_TRAIT = ["Model", "View", "Field", "Label", "Item", "ViewModel", "Cell", "Button", "ViewController", "TableView", "CollectionView", "Control", "Entity", "Delegate"]
  
   #type 1 ：随机字符, 2 : 随机单词, 3 : 自定义单词替换
   #reference_content 原来准备替换的内容， 避免过度混淆

@@ -14,6 +14,9 @@
 
 ![ScreenShot Gif](./screen_shot.gif)
 
+##  class_dump 效果（项目：iOS-2048）
+
+![效果](./class_dump_img.png)
 
 ## Installation
 

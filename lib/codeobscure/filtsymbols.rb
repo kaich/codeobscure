@@ -53,7 +53,7 @@ module FiltSymbols
     end
 
     if File.exist? funclist_path  
-      `rm -f #{funclist_path}`
+      `rm -f '#{funclist_path}'`
     end
 
   end

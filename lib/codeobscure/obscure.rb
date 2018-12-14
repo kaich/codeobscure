@@ -86,7 +86,7 @@ module Obscure
     end
     
     if File.exists? @@HEAD_FILE 
-      `rm -f #{@@HEAD_FILE}` 
+      `rm -f '#{@@HEAD_FILE}'` 
     end 
 
     date = `date`
@@ -123,7 +123,7 @@ module Obscure
     file.close
 
     if File.exist? @@STRING_SYMBOL_FILE
-      `rm -f #{@@STRING_SYMBOL_FILE}`
+      `rm -f '#{@@STRING_SYMBOL_FILE}'`
     end
     @@HEAD_FILE
   end

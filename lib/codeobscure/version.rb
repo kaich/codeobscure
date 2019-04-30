@@ -1,3 +1,3 @@
 module Codeobscure
-  VERSION = "0.1.7.4"
+  VERSION = "0.1.7.5"
 end

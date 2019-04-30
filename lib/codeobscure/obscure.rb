@@ -70,6 +70,14 @@ module Obscure
     result
   end
 
+  def self.toDefine(from, to) 
+    <<~Define
+        #ifndef #{from}
+          #define #{from} #{to}
+        #endif
+    Define
+  end
+
   #有define重复的问题等待解决
   def self.run(root_dir,type = 'r')
 
@@ -106,14 +114,14 @@ module Obscure
           result = FiltSymbols.query("set#{line_content.upcase_first_letter}") 
           if result.nil? || result.empty? 
             if !ignore_symbols.include?(line_content)
-              file.puts "#define #{line_content} #{ramdom}"
-              file.puts "#define _#{line_content} _#{ramdom}"
-              file.puts "#define set#{line_content.upcase_first_letter} set#{ramdom.upcase_first_letter}"
+              file.puts(toDefine "#{line_content}", "#{ramdom}")
+              file.puts(toDefine "_#{line_content}", "_#{ramdom}")
+              file.puts(toDefine "set#{line_content.upcase_first_letter}", "set#{ramdom.upcase_first_letter}")
             end
           end
         else 
             if !ignore_symbols.include?(line_content)
-              file.puts "#define #{line_content} #{ramdom}"
+              file.puts(toDefine "#{line_content}", "#{ramdom}")
             end
         end
       end 

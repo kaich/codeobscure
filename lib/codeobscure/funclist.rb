@@ -182,13 +182,13 @@ module FuncList
     file = File.open(funclist_path, "w")
     file_pathes = []
     if type == "h" || type == "m"
-      file_pathes = `find #{path} -name "*.#{type}" -d`.split "\n"
+      file_pathes = `find '#{path}' -name "*.#{type}" -d`.split "\n"
     elsif type == "all"
-      file_pathes += `find #{path} -name "*.h" -d`.split "\n"
-      file_pathes += `find #{path} -name "*.m" -d`.split "\n"
+      file_pathes += `find '#{path}' -name "*.h" -d`.split "\n"
+      file_pathes += `find '#{path}' -name "*.m" -d`.split "\n"
     end
-    file_pathes += `find #{path} -name "*.storyboard" -d`.split "\n"
-    file_pathes += `find #{path} -name "*.xib" -d`.split "\n"
+    file_pathes += `find '#{path}' -name "*.storyboard" -d`.split "\n"
+    file_pathes += `find '#{path}' -name "*.xib" -d`.split "\n"
 
     file_pathes.each do |file_path|
       content = File.read file_path

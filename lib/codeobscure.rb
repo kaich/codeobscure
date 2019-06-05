@@ -58,7 +58,7 @@ module Codeobscure
 
     if options[:reset] 
       `rm -f '#{root}/filtSymbols'`
-      `cp '#{root}/filtSymbols_standard #{root}/filtSymbols'`
+      `cp '#{root}/filtSymbols_standard' '#{root}/filtSymbols'`
       puts "重置完毕!".colorize(:green)
     end
 

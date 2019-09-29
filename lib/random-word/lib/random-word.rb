@@ -1,0 +1,1 @@
+require 'random_word'

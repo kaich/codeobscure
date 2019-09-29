@@ -33,5 +33,4 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'colorize' , '~> 0.7'
   spec.add_runtime_dependency "xcodeproj", "~> 1.5"
   spec.add_runtime_dependency "sqlite3", "~> 1.3"
-  spec.add_runtime_dependency "random-word", "~> 2.1"
 end

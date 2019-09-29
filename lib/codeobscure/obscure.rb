@@ -1,6 +1,6 @@
 require_relative 'filtsymbols.rb'
+require_relative '../random-word/lib/random_word'
 require 'sqlite3'
-require 'random_word'
 
 class String 
   def upcase_first_letter
